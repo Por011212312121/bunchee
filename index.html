@@ -33,6 +33,18 @@ header{background:var(--brand);color:#fff;border-bottom:4px solid var(--accent)}
 .hbtn.sheet:hover{filter:brightness(1.1)}
 .hbtn.pill{background:rgba(255,255,255,.14);color:#fff}
 .hbtn.pill.err{background:#fde2e2;color:#b91c1c}
+.hbtn.user{background:#fff;color:var(--brand)}
+#loginScreen{position:fixed;inset:0;z-index:100;background:linear-gradient(160deg,var(--brand) 0%,#14286a 100%);display:flex;align-items:center;justify-content:center;padding:16px;overflow:auto}
+#loginScreen .lbox{background:#fff;border-radius:20px;max-width:420px;width:100%;padding:28px 24px;box-shadow:0 20px 60px rgba(0,0,0,.3);border-top:6px solid var(--accent)}
+#loginScreen .lhead{text-align:center;margin-bottom:18px}
+#loginScreen .lhead .logo{width:60px;height:60px;border-radius:14px;background:var(--accent);display:inline-grid;place-items:center;font-size:32px}
+#loginScreen h2{margin:10px 0 2px;color:var(--brand);font-size:22px}
+#loginScreen .lhead small{color:var(--muted)}
+#loginScreen .who{font-weight:700;font-size:18px;margin:6px 0 10px}
+#loginScreen .recent{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+#loginScreen .remember{display:flex;gap:10px;align-items:center;margin:14px 0 4px;padding:12px;border-radius:12px;background:var(--brand-soft);cursor:pointer;font-weight:600;color:var(--brand)}
+#loginScreen .remember input{width:22px;height:22px;accent-color:var(--brand)}
+.byline{text-align:center;color:var(--muted);font-size:14px;margin-top:8px}
 nav.tabs{position:sticky;top:0;z-index:20;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 2px 8px rgba(20,30,70,.05)}
 nav.tabs .in{max-width:1180px;margin:0 auto;display:flex;gap:4px;padding:0 8px;overflow-x:auto}
 nav.tabs button{border:0;background:none;padding:14px 16px;font-weight:600;color:var(--muted);border-bottom:3px solid transparent;white-space:nowrap;cursor:pointer;font-size:16px}
@@ -182,6 +194,7 @@ pre.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px;font-s
       <small>สมุดบันทึกรายรับ–รายจ่าย งานรับเหมาก่อสร้าง</small>
     </div>
     <div class="right">
+      <button class="hbtn user" id="userPill" onclick="switchUser()" title="กดเพื่อเปลี่ยนผู้ลงบัญชี">👤 -</button>
       <button class="hbtn pill" id="syncPill" onclick="pillClick()">💾 เก็บในเครื่องนี้</button>
       <a class="hbtn sheet" id="sheetBtn" target="_blank" rel="noopener">📗 เปิด Google Sheet</a>
     </div>
@@ -304,6 +317,7 @@ pre.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px;font-s
 
     <div class="total out" id="totalBox"><span id="totalLabel">ยอดจ่ายสุทธิ</span><span class="v" id="totalVal">0.00</span></div>
     <button class="btn primary" id="saveBtn">💾 บันทึกรายการ</button>
+    <div class="byline">ลงบัญชีโดย <b id="byName">-</b> · <a href="#" onclick="switchUser();return false" style="color:var(--brand)">เปลี่ยนผู้ใช้</a></div>
   </div>
 
   <div>
@@ -400,16 +414,8 @@ pre.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px;font-s
       <p class="hint" style="margin-top:0">เชื่อมแล้ว ทุกเครื่องในบริษัทจะเห็นข้อมูลชุดเดียวกัน ได้แก่ รายการ โครงการ บัญชีโปรด และหมวดหมู่ รูปใบเสร็จจะถูกเก็บใน Google Drive</p>
       <label class="f" style="margin-top:0">Google Apps Script Web app URL (ลงท้ายด้วย /exec)</label>
       <input class="t" id="sGs" placeholder="https://script.google.com/macros/s/.../exec">
-      <div class="row2">
-        <div>
-          <label class="f">รหัสบริษัท</label>
-          <input class="t" id="sKey" type="password" autocomplete="off" placeholder="เว้นว่างได้ถ้าไม่ตั้ง">
-        </div>
-        <div>
-          <label class="f">ชื่อผู้ใช้เครื่องนี้</label>
-          <input class="t" id="sUser" placeholder="เช่น พี่นก บัญชี">
-        </div>
-      </div>
+      <label class="f">รหัสบริษัท</label>
+      <input class="t" id="sKey" type="password" autocomplete="off" placeholder="เว้นว่างได้ถ้าไม่ตั้ง">
       <label class="f">ลิงก์ Google Sheet (สำหรับปุ่ม 📗 ด้านบน)</label>
       <input class="t" id="sSheetLink" placeholder="https://docs.google.com/spreadsheets/d/...">
       <div class="btns" style="margin-top:12px">
@@ -466,6 +472,21 @@ pre.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px;font-s
   </div>
 </div></div>
 <div class="modal" id="rcModal" onclick="closeModal('rcModal')"><div class="box"><img id="rcImg" alt="ใบเสร็จ"></div></div>
+<div id="loginScreen" hidden>
+  <form class="lbox" id="loginForm" autocomplete="off">
+    <div class="lhead">
+      <div class="logo">🏗️</div>
+      <h2 id="loginCo">สมุดบัญชีรับเหมา</h2>
+      <small>สมุดบันทึกรายรับ–รายจ่าย งานรับเหมาก่อสร้าง</small>
+    </div>
+    <div class="who">👤 ใครกำลังลงบัญชี?</div>
+    <div class="recent" id="recentUsers"></div>
+    <input class="t" id="loginName" placeholder="พิมพ์ชื่อของคุณ เช่น พี่นก" maxlength="40" style="font-size:18px">
+    <label class="remember"><input type="checkbox" id="loginRemember"> ล็อคอินด้วยชื่อนี้เสมอ (เครื่องนี้)</label>
+    <div class="hint" style="margin:4px 2px 0">ติ๊กไว้ ครั้งหน้าเปิดแอปจะเข้าเลย ไม่ต้องกรอกชื่ออีก จนกว่าจะกด “เปลี่ยนผู้ใช้”</div>
+    <button class="btn primary" type="submit">เข้าใช้งาน →</button>
+  </form>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -642,6 +663,7 @@ function shrink(file,max,q,type='image/jpeg'){return new Promise(res=>{const fr=
 
 $('saveBtn').onclick=async()=>{
   const c=calc();
+  if(!DEV.user){showLogin();return toast('กรุณากรอกชื่อผู้ลงบัญชีก่อน')}
   if(!$('fDate').value)return toast('กรุณาเลือกวันที่');
   if(!F.cat)return toast('กรุณาเลือกหมวดหมู่');
   if(c.amount<=0){$('fAmount').focus();return toast('กรุณากรอกจำนวนเงิน')}
@@ -879,7 +901,7 @@ async function shareImg(){
 
 /* ================= SETTINGS ================= */
 function renderSettings(){
-  $('sCompany').value=DB.company;$('sGs').value=DEV.gsUrl;$('sKey').value=DEV.key;$('sUser').value=DEV.user;$('sSheetLink').value=DB.sheetLink||'';
+  $('sCompany').value=DB.company;$('sGs').value=DEV.gsUrl;$('sKey').value=DEV.key;$('sSheetLink').value=DB.sheetLink||'';
   $('gsCode').textContent=GS_CODE;
   renderSettingsLists();
 }
@@ -892,7 +914,6 @@ function renderSettingsLists(){
   $('logoList').querySelectorAll('[data-logo]').forEach(i=>i.onchange=async e=>{const f=e.target.files[0];if(!f)return;const c=i.dataset.logo;DB.logos[c]=await shrink(f,96,.9,'image/png');setShared('logo:'+c);renderSettingsLists();syncForm();toast('อัปเดตโลโก้แล้ว')});
 }
 $('sCompany').onchange=()=>{DB.company=$('sCompany').value.trim()||'บริษัทของฉัน';setShared('company');$('coName').textContent=DB.company;toast('บันทึกชื่อบริษัทแล้ว')};
-$('sUser').onchange=()=>{DEV.user=$('sUser').value.trim();saveDev();toast('บันทึกชื่อผู้ใช้แล้ว')};
 $('sSheetLink').onchange=()=>{DB.sheetLink=$('sSheetLink').value.trim();setShared('sheetLink');updateSheetBtn();toast('บันทึกลิงก์แล้ว')};
 function resetLogo(c){delete DB.logos[c];setShared('logo:'+c);renderSettingsLists();syncForm()}
 function addProject(){
@@ -1105,7 +1126,7 @@ function gsStatus(){
 async function saveConn(){
   const u=$('sGs').value.trim();
   if(u&&!/^https:\/\/script\.google\.com\/.+\/exec$/.test(u))return toast('URL ต้องขึ้นต้นด้วย https://script.google.com และลงท้ายด้วย /exec');
-  DEV.gsUrl=u;DEV.key=$('sKey').value.trim();DEV.user=$('sUser').value.trim();saveDev();
+  DEV.gsUrl=u;DEV.key=$('sKey').value.trim();saveDev();
   if(!u){lastErr='';setStatus();gsStatus();return toast('ยกเลิกการเชื่อมต่อแล้ว')}
   toast('🔄 กำลังเชื่อมต่อ…');const ok=await sync(true);gsStatus();
   toast(ok?'✅ เชื่อมต่อสำเร็จ ข้อมูลตรงกับ Sheet แล้ว':'⚠️ '+lastErr);
@@ -1127,6 +1148,39 @@ function refreshViews(){
   if($('p-set').classList.contains('on'))renderSettingsLists();
 }
 
+/* ================= ผู้ลงบัญชี (เข้าสู่ระบบด้วยชื่อ) ================= */
+const SS_USER='contractor_books_session_user';
+function ssGet(){try{return sessionStorage.getItem(SS_USER)||''}catch(e){return''}}
+function ssSet(v){try{v?sessionStorage.setItem(SS_USER,v):sessionStorage.removeItem(SS_USER)}catch(e){}}
+function showUser(){$('userPill').textContent='👤 '+(DEV.user||'-');$('byName').textContent=DEV.user||'-'}
+function showLogin(){
+  const known=DEV.knownUsers||[];
+  $('loginCo').textContent=DB.company;
+  $('recentUsers').innerHTML=known.map(n=>`<button type="button" class="chip" data-n="${esc(n)}">👤 ${esc(n)}</button>`).join('');
+  $('recentUsers').querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{$('loginName').value=b.dataset.n;$('recentUsers').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b))});
+  $('loginName').value=DEV.user||'';$('loginRemember').checked=false;
+  $('loginScreen').hidden=false;setTimeout(()=>$('loginName').focus(),50);
+}
+$('loginForm').onsubmit=e=>{
+  e.preventDefault();
+  const n=$('loginName').value.trim().replace(/\s+/g,' ');
+  if(!n){$('loginName').focus();return toast('กรุณากรอกชื่อก่อนเข้าใช้งาน')}
+  DEV.user=n;DEV.rememberUser=$('loginRemember').checked;
+  DEV.knownUsers=[n,...(DEV.knownUsers||[]).filter(x=>x!==n)].slice(0,8);
+  saveDev();ssSet(n);showUser();$('loginScreen').hidden=true;
+  toast(`สวัสดี ${n}`+(DEV.rememberUser?' · จำชื่อนี้ไว้แล้ว':''));
+};
+function switchUser(){
+  if(!confirm(`ออกจากชื่อ “${DEV.user}” แล้วเข้าด้วยชื่ออื่น?`))return;
+  DEV.rememberUser=false;saveDev();ssSet('');showLogin();
+}
+function requireLogin(){
+  if(DEV.rememberUser&&DEV.user){showUser();return}
+  const s=ssGet();
+  if(s){DEV.user=s;saveDev();showUser();return}
+  showUser();showLogin();
+}
+
 /* ================= INIT ================= */
 function init(){
   if(!$('fDate').value)$('fDate').value=todayISO();
@@ -1138,6 +1192,7 @@ setInterval(autoPull,60000);
 window.addEventListener('focus',autoPull);
 window.addEventListener('online',()=>sync(true));
 init();
+requireLogin();
 idbOpen().then(()=>{if(DEV.gsUrl){lastPull=Date.now();sync(true)}});
 </script>
 </body>
