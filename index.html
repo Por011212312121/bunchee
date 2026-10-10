@@ -411,7 +411,7 @@ pre.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px;font-s
   <div>
     <div class="card">
       <h2>🔗 ฐานข้อมูลบริษัท (Google Sheet)</h2>
-      <p class="hint" style="margin-top:0">เชื่อมแล้ว ทุกเครื่องในบริษัทจะเห็นข้อมูลชุดเดียวกัน ได้แก่ รายการ โครงการ บัญชีโปรด และหมวดหมู่ รูปใบเสร็จจะถูกเก็บใน Google Drive</p>
+      <p class="hint" style="margin-top:0">เชื่อมแล้ว ทุกเครื่องในบริษัทจะเห็นข้อมูลชุดเดียวกัน รายการจะถูกเขียนลงแท็บ “รายการ” ส่วนโครงการ หมวด บัญชีธนาคาร และผู้ลงบัญชี ดึงจากแท็บ “ตั้งค่า” ในชีต รูปใบเสร็จเก็บใน Google Drive</p>
       <label class="f" style="margin-top:0">Google Apps Script Web app URL (ลงท้ายด้วย /exec)</label>
       <input class="t" id="sGs" placeholder="https://script.google.com/macros/s/.../exec">
       <label class="f">รหัสบริษัท</label>
@@ -425,20 +425,21 @@ pre.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px;font-s
       </div>
       <div id="gsStatus"></div>
       <div class="xbox">
-        <b>📦 แจกแอปให้ทุกคนในบริษัท</b>
-        <p class="hint" style="margin:4px 0 10px">ดาวน์โหลดไฟล์แอปที่ใส่ URL และรหัสไว้ให้แล้ว ส่งไฟล์นี้ให้พนักงานทาง LINE หรืออีเมล เปิดแล้วเห็นข้อมูลบริษัททันที ไม่ต้องตั้งค่าเอง</p>
-        <button class="btn ghost sm" onclick="exportApp()">⬇️ ดาวน์โหลดไฟล์แอปสำหรับแจก</button>
+        <b>🔗 ลิงก์เชื่อมต่อสำหรับพนักงาน</b>
+        <p class="hint" style="margin:4px 0 10px">กดคัดลอกแล้วส่งให้พนักงานทาง LINE พนักงานกดลิงก์ครั้งเดียว แอปในเครื่องนั้นจะเชื่อมกับ Google Sheet ของบริษัทให้เอง ไม่ต้องกรอก URL หรือรหัส (อย่าโพสต์ลิงก์นี้ในที่สาธารณะ)</p>
+        <button class="btn ghost sm" onclick="copyConnectLink()">📋 คัดลอกลิงก์เชื่อมต่อ</button>
       </div>
       <details style="margin-top:12px">
         <summary style="cursor:pointer;color:var(--brand);font-weight:600">▶ วิธีตั้งค่าครั้งแรก (ทำครั้งเดียว โดยเจ้าของ Sheet)</summary>
         <ol style="font-size:14px;padding-left:20px">
-          <li>เปิด Google Sheet ของบริษัท → เมนู <b>ส่วนขยาย → Apps Script</b></li>
+          <li>เปิด Google Sheet <b>บัญชี บริษัท</b> → เมนู <b>ส่วนขยาย → Apps Script</b></li>
           <li>ลบโค้ดเดิมทั้งหมด วางโค้ดด้านล่าง แล้วแก้บรรทัด <b>KEY</b> เป็นรหัสบริษัทที่ต้องการ → กดบันทึก 💾</li>
           <li>กด <b>ทำให้ใช้งานได้ → การทำให้ใช้งานได้รายการใหม่</b> → เลือกประเภท “เว็บแอป”</li>
-          <li>“เรียกใช้ในฐานะ” เลือก <b>ฉัน</b> และ “ผู้มีสิทธิ์เข้าถึง” เลือก <b>ทุกคน</b> → กดทำให้ใช้งานได้ → อนุญาตสิทธิ์ (Sheet + Drive)</li>
+          <li>“เรียกใช้ในฐานะ” เลือก <b>ฉัน</b> และ “ผู้มีสิทธิ์เข้าถึง” เลือก <b>ทุกคน</b> → กดทำให้ใช้งานได้ → อนุญาตสิทธิ์</li>
           <li>คัดลอก URL ที่ลงท้ายด้วย <b>/exec</b> มาวางด้านบน ใส่รหัสบริษัท แล้วกด “บันทึกและเชื่อมต่อ”</li>
+          <li>กด “คัดลอกลิงก์เชื่อมต่อ” แล้วส่งให้พนักงาน</li>
         </ol>
-        <p class="hint">🔁 <b>ถ้าเคยใส่โค้ดเวอร์ชันเก่าไว้แล้ว:</b> วางโค้ดใหม่ทับ → <b>ทำให้ใช้งานได้ → จัดการการทำให้ใช้งานได้</b> → กด ✏️ → เวอร์ชันเลือก <b>“เวอร์ชันใหม่”</b> → ทำให้ใช้งานได้ (ใช้ URL เดิมต่อได้) ข้อมูลรูปแบบเก่าจะถูกเก็บไว้ในแท็บ “รายการ (เก่า)” จากนั้นกด “ส่งรายการในเครื่องทั้งหมดขึ้น Sheet” 1 ครั้ง</p>
+        <p class="hint">🔁 <b>ถ้าแก้โค้ดภายหลัง:</b> วางโค้ดใหม่ทับ → <b>ทำให้ใช้งานได้ → จัดการการทำให้ใช้งานได้</b> → กด ✏️ → เวอร์ชันเลือก <b>“เวอร์ชันใหม่”</b> → ทำให้ใช้งานได้ (URL เดิมใช้ต่อได้)</p>
         <button class="btn ghost sm" onclick="copyScript()">📋 คัดลอกโค้ด</button>
         <pre class="code" id="gsCode"></pre>
       </details>
@@ -492,7 +493,8 @@ pre.code{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px;font-s
 <script>
 const APP_SRC='<!doctype html>\n'+document.documentElement.outerHTML; // ต้นฉบับไว้สร้างไฟล์แจก
 const PRESET={url:/*PRESET_URL*/'',key:/*PRESET_KEY*/''};
-const DEFAULT_SHEET_LINK='https://docs.google.com/spreadsheets/d/1DH7D4A7QVlUEvMWnyIqCsClHYJd_hRUZhMVSk2AdyeQ/edit?gid=492275260#gid=492275260';
+const DEFAULT_SHEET_LINK='https://docs.google.com/spreadsheets/d/11UuKQYk9IfBoelf4bYm51vmB59RoX9WoT1Nzmai8daE/edit';
+const OLD_SHEET_LINK='https://docs.google.com/spreadsheets/d/1DH7D4A7QVlUEvMWnyIqCsClHYJd_hRUZhMVSk2AdyeQ/edit?gid=492275260#gid=492275260';
 /* ================= DATA ================= */
 const BANKS=[
  {code:'KBANK',name:'กสิกรไทย',abbr:'K',bg:'#138f2d',fg:'#fff'},
@@ -525,15 +527,19 @@ const TH_M=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ
 const TH_MF=['มกราคม','กุมภาพันธ์','มีนาคม','เมษายน','พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม','กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'];
 
 const LSD='contractor_books_device';
-const SHARED_KEYS=['company','projects','favs','cats','sheetLink'];
+const SHARED_KEYS=['company']; // โครงการ/หมวด/บัญชี/ผู้ลงบัญชี อยู่ในแท็บ ตั้งค่า ของชีต
 function defaults(){return{company:'บริษัทของฉัน',txs:[],projects:[{id:'p_general',name:'ทั่วไป / สำนักงาน',client:'',contract:0,active:true}],favs:[],logos:{},sheetLink:DEFAULT_SHEET_LINK,cats:JSON.parse(JSON.stringify(DEFAULT_CATS))}}
 function load(){try{const d=JSON.parse(localStorage.getItem(LS));if(d)return Object.assign(defaults(),d)}catch(e){}return defaults()}
 let DB=load();
+if(DB.sheetLink===OLD_SHEET_LINK)DB.sheetLink=DEFAULT_SHEET_LINK;
 function save(){try{localStorage.setItem(LS,JSON.stringify(DB))}catch(e){toast('⚠️ บันทึกไม่สำเร็จ: พื้นที่เก็บข้อมูลเต็ม')}}
 /* ข้อมูลเฉพาะเครื่อง: การเชื่อมต่อ, ชื่อผู้ใช้, คิวรอส่ง */
 let DEV=(()=>{let d={};try{d=JSON.parse(localStorage.getItem(LSD))||{}}catch(e){}return Object.assign({gsUrl:'',key:'',user:'',pending:[],lastSync:0},d)})();
 if(DB.gsUrl&&!DEV.gsUrl)DEV.gsUrl=DB.gsUrl;delete DB.gsUrl;
 if(PRESET.url&&!DEV.gsUrl){DEV.gsUrl=PRESET.url;DEV.key=PRESET.key}
+/* ลิงก์เชื่อมต่อสำหรับพนักงาน: ...#connect=xxxx (ข้อมูลหลัง # ไม่ถูกส่งไปที่เซิร์ฟเวอร์และไม่อยู่ในไฟล์บน GitHub) */
+let CONNECTED_BY_LINK=false;
+try{const m=location.hash.match(/^#connect=(.+)$/);if(m){const o=JSON.parse(decodeURIComponent(escape(atob(decodeURIComponent(m[1])))));if(o.u){DEV.gsUrl=o.u;DEV.key=o.k||'';CONNECTED_BY_LINK=true}history.replaceState(null,'',location.pathname+location.search)}}catch(e){}
 function saveDev(){try{localStorage.setItem(LSD,JSON.stringify(DEV))}catch(e){}}
 saveDev();
 
@@ -558,7 +564,7 @@ const thMonth=ym=>{if(!ym)return'ทุกเดือน';const[y,m]=ym.split('
 const digits=s=>String(s||'').replace(/\D/g,'');
 function fmtAcc(s){const d=digits(s);if(d.length===10)return`${d.slice(0,3)}-${d.slice(3,4)}-${d.slice(4,9)}-${d.slice(9)}`;if(d.length===12)return`${d.slice(0,3)}-${d.slice(3,6)}-${d.slice(6,12)}`;return d}
 const maskAcc=s=>{const d=digits(s);return d?'xxx-'+d.slice(-4):''};
-const projName=id=>(DB.projects.find(p=>p.id===id)||{}).name||'-';
+const projName=id=>(DB.projects.find(p=>p.id===id)||{}).name||(String(id||'').startsWith('p_')?'-':id)||'-';
 let toastT;
 function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('on'),2600)}
 function closeModal(id){$(id).classList.remove('on')}
@@ -612,7 +618,7 @@ function syncForm(){
   const cats=DB.cats[F.type];
   $('catChips').innerHTML=cats.map(c=>`<button class="chip ${F.cat===c?'on':''}" data-c="${esc(c)}">${esc(c)}</button>`).join('')+`<button class="chip add" id="addCat">+ เพิ่มหมวด</button>`;
   $('catChips').querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{F.cat=b.dataset.c;syncForm()});
-  $('addCat').onclick=()=>{const n=prompt('ชื่อหมวดหมู่ใหม่ (ใส่อีโมจินำหน้าได้ เช่น 🪵 ค่าไม้แบบ)');if(n&&n.trim()){DB.cats[F.type].splice(-1,0,n.trim());F.cat=n.trim();setShared('cats');syncForm()}};
+  $('addCat').onclick=()=>{const n=prompt('ชื่อหมวดหมู่ใหม่ (ใส่อีโมจินำหน้าได้ เช่น 🪵 ค่าไม้แบบ)');if(n&&n.trim()){DB.cats[F.type].splice(-1,0,n.trim());F.cat=n.trim();setShared('cats');addToSheetList(F.type==='in'?'catsIn':'catsOut',n.trim());syncForm()}};
   // transfer box
   $('xferBox').hidden=F.method!=='transfer';
   renderFavs();renderBankGrid();
@@ -674,7 +680,7 @@ $('saveBtn').onclick=async()=>{
     if(!accNo){$('fAccNo').focus();return toast('กรุณากรอกเลขที่บัญชี')}
     if(!F.favId&&$('fSaveFav').checked){
       const dup=DB.favs.find(f=>f.bank===bank&&f.accNo===accNo);
-      if(!dup){DB.favs.push({id:uid('f'),bank,accNo,accName,nick:$('fFavNick').value.trim()});setShared('favs')}
+      if(!dup){const nick=$('fFavNick').value.trim();DB.favs.push({id:uid('f'),bank,accNo,accName,nick});setShared('favs');addToSheetList('accounts',{bank:BANK[bank]?.name||'อื่นๆ',accNo:fmtAcc(accNo),nick})}
       toast('⭐ เพิ่มบัญชีโปรดแล้ว');
     }
   }
@@ -918,30 +924,37 @@ $('sSheetLink').onchange=()=>{DB.sheetLink=$('sSheetLink').value.trim();setShare
 function resetLogo(c){delete DB.logos[c];setShared('logo:'+c);renderSettingsLists();syncForm()}
 function addProject(){
   const n=$('npName').value.trim();if(!n)return toast('กรุณาใส่ชื่อโครงการ');
-  DB.projects.push({id:uid('p'),name:n,client:$('npClient').value.trim(),contract:parseNum($('npContract').value),active:true});
+  if(DB.projects.some(p=>p.name===n))return toast('มีโครงการชื่อนี้แล้ว');
+  const np={id:isLinked()?n:uid('p'),name:n,client:$('npClient').value.trim(),contract:parseNum($('npContract').value),active:true};
+  DB.projects.push(np);addToSheetList('projects',{name:np.name,client:np.client,contract:np.contract});
   setShared('projects');['npName','npClient','npContract'].forEach(i=>$(i).value='');fillSelects();renderSettingsLists();toast('เพิ่มโครงการแล้ว');
 }
-function editProject(id){const p=DB.projects.find(x=>x.id===id);const n=prompt('ชื่อโครงการ',p.name);if(n===null)return;const cl=prompt('ผู้ว่าจ้าง',p.client||'');if(cl===null)return;const ct=prompt('มูลค่าสัญญา (บาท)',p.contract||'');if(ct===null)return;Object.assign(p,{name:n.trim()||p.name,client:cl.trim(),contract:parseNum(ct)});setShared('projects');fillSelects();renderSettingsLists()}
-function toggleProject(id){const p=DB.projects.find(x=>x.id===id);p.active=p.active===false;setShared('projects');fillSelects();renderSettingsLists()}
-function delProject(id){const n=DB.txs.filter(t=>t.projectId===id).length;if(n)return alert(`โครงการนี้มี ${n} รายการ ลบไม่ได้\nแนะนำให้กด ✅ เพื่อ “ปิดโครงการ” แทน`);if(!confirm('ลบโครงการนี้?'))return;DB.projects=DB.projects.filter(p=>p.id!==id);setShared('projects');fillSelects();renderSettingsLists()}
-function editFav(id){const f=DB.favs.find(x=>x.id===id);const n=prompt('ชื่อเรียกบัญชี',f.nick||'');if(n===null)return;const a=prompt('ชื่อบัญชี',f.accName||'');if(a===null)return;f.nick=n.trim();f.accName=a.trim();setShared('favs');renderSettingsLists();syncForm()}
-function delFav(id){if(!confirm('ลบบัญชีโปรดนี้? (รายการที่บันทึกไว้แล้วไม่หาย)'))return;DB.favs=DB.favs.filter(f=>f.id!==id);if(F.favId===id)F.favId=null;setShared('favs');renderSettingsLists();syncForm()}
+function editProject(id){if(sheetOnly())return;const p=DB.projects.find(x=>x.id===id);const n=prompt('ชื่อโครงการ',p.name);if(n===null)return;const cl=prompt('ผู้ว่าจ้าง',p.client||'');if(cl===null)return;const ct=prompt('มูลค่าสัญญา (บาท)',p.contract||'');if(ct===null)return;Object.assign(p,{name:n.trim()||p.name,client:cl.trim(),contract:parseNum(ct)});setShared('projects');fillSelects();renderSettingsLists()}
+function toggleProject(id){if(sheetOnly())return;const p=DB.projects.find(x=>x.id===id);p.active=p.active===false;setShared('projects');fillSelects();renderSettingsLists()}
+function delProject(id){if(sheetOnly())return;const n=DB.txs.filter(t=>t.projectId===id).length;if(n)return alert(`โครงการนี้มี ${n} รายการ ลบไม่ได้\nแนะนำให้กด ✅ เพื่อ “ปิดโครงการ” แทน`);if(!confirm('ลบโครงการนี้?'))return;DB.projects=DB.projects.filter(p=>p.id!==id);setShared('projects');fillSelects();renderSettingsLists()}
+function editFav(id){if(sheetOnly())return;const f=DB.favs.find(x=>x.id===id);const n=prompt('ชื่อเรียกบัญชี',f.nick||'');if(n===null)return;const a=prompt('ชื่อบัญชี',f.accName||'');if(a===null)return;f.nick=n.trim();f.accName=a.trim();setShared('favs');renderSettingsLists();syncForm()}
+function delFav(id){if(sheetOnly())return;if(!confirm('ลบบัญชีโปรดนี้? (รายการที่บันทึกไว้แล้วไม่หาย)'))return;DB.favs=DB.favs.filter(f=>f.id!==id);if(F.favId===id)F.favId=null;setShared('favs');renderSettingsLists();syncForm()}
 
 function backup(){const d=Object.assign({},DB,{txs:DB.txs.map(({srv,...t})=>t)});dl(new Blob([JSON.stringify(d,null,1)],{type:'application/json'}),`สำรองบัญชี_${todayISO()}.json`)}
 $('restoreFile').onchange=e=>{const f=e.target.files[0];if(!f)return;const fr=new FileReader();fr.onload=()=>{try{const d=JSON.parse(fr.result);if(!Array.isArray(d.txs))throw 0;
   if(!confirm(`กู้คืนข้อมูล ${d.txs.length} รายการ?${DEV.gsUrl?'\nข้อมูลจะถูกส่งขึ้น Google Sheet ให้ทุกเครื่องเห็นด้วย':'\nข้อมูลปัจจุบันจะถูกแทนที่'}`))return;
   delete d.gsUrl;d.txs.forEach(t=>t.srv=false);DB=Object.assign(defaults(),d);save();
-  if(DEV.gsUrl){SHARED_KEYS.forEach(k=>queueSetting(k));Object.keys(DB.logos).forEach(c=>queueSetting('logo:'+c));queue({op:'bulk',ids:DB.txs.map(t=>t.id)})}
+  if(DEV.gsUrl){DB.projects.forEach(p=>addToSheetList('projects',{name:p.name,client:p.client,contract:p.contract}));DB.favs.forEach(f=>addToSheetList('accounts',{bank:BANK[f.bank]?.name||'อื่นๆ',accNo:fmtAcc(f.accNo),nick:f.nick}));SHARED_KEYS.forEach(k=>queueSetting(k));Object.keys(DB.logos).forEach(c=>queueSetting('logo:'+c));queue({op:'bulk',ids:DB.txs.map(t=>t.id)})}
   init();toast('กู้คืนข้อมูลแล้ว')}catch(err){alert('ไฟล์ไม่ถูกต้อง')}};fr.readAsText(f);e.target.value=''};
 function wipeAll(){
   if(DEV.gsUrl){if(!confirm('ล้างข้อมูลที่เก็บในเครื่องนี้ แล้วโหลดใหม่จาก Google Sheet?\n(ข้อมูลใน Sheet ไม่หาย)'))return;DB=defaults();DEV.pending=[];saveDev();save();init();sync(true);return}
   if(!confirm('ล้างข้อมูลทั้งหมด? ควรสำรองข้อมูลก่อน'))return;if(prompt('พิมพ์คำว่า ลบ เพื่อยืนยัน')!=='ลบ')return;DB=defaults();save();idbDo('readwrite',s=>s.clear());init();toast('ล้างข้อมูลแล้ว')}
 
 /* ================= GOOGLE SHEET (ฐานข้อมูลกลาง) ================= */
-const GS_CODE=`// ===== สมุดบัญชีรับเหมา — ฐานข้อมูลกลางบน Google Sheet =====
+const GS_CODE=`// ===== สมุดบัญชีรับเหมา: ตัวเชื่อมระหว่างแอปกับ Google Sheet "บัญชี บริษัท" =====
+// วางโค้ดนี้ใน Google Sheet > ส่วนขยาย > Apps Script แล้วตั้งรหัสบริษัทในบรรทัดด้านล่าง
 const KEY = '';  // รหัสบริษัท ต้องตรงกับที่กรอกในแอป (เว้นว่าง = ไม่ใช้รหัส)
-const TX = 'รายการ', SET = 'ตั้งค่าแอป', FOLDER = 'ใบเสร็จ-สมุดบัญชีรับเหมา';
-const HEAD = ['id','วันที่','ประเภท','โครงการ','หมวดหมู่','รายละเอียด','คู่ค้า','เลขที่เอกสาร','ยอดก่อน VAT','VAT','หัก ณ ที่จ่าย','ยอดสุทธิ','ช่องทาง','ธนาคาร','เลขบัญชี','ชื่อบัญชี','หมายเหตุ','ใบเสร็จ','ผู้บันทึก','อัปเดต','data'];
+
+const TX = 'รายการ', CFG = 'ตั้งค่า', APP = 'ตั้งค่าแอป', FOLDER = 'ใบเสร็จ-สมุดบัญชีรับเหมา';
+const NCELL = 17;    // คอลัมน์ A–Q ที่แอปเขียน (R, S เป็นสูตรของชีต ห้ามเขียนทับ)
+const ID_COL = 20;   // คอลัมน์ T: รหัสรายการ (ซ่อน)
+const DATA_COL = 21; // คอลัมน์ U: ข้อมูลสำรองของแอป (ซ่อน)
+const LIST_COL = { projects: 1, catsOut: 5, catsIn: 7, accounts: 11, staff: 21 };
 
 function doGet() { return ContentService.createTextOutput('สมุดบัญชีรับเหมา: เชื่อมต่อได้'); }
 
@@ -956,6 +969,7 @@ function doPost(e) {
     if (d.action === 'load') return out(load(ss));
     if (d.action === 'upsert') { upsert(ss, d.rows || []); return out({ ok: true }); }
     if (d.action === 'delete') { remove(ss, d.id); return out({ ok: true }); }
+    if (d.action === 'addList') { addList(ss, d.list, d.item); return out({ ok: true }); }
     if (d.action === 'setting') { setting(ss, d.name, d.value); return out({ ok: true }); }
     if (d.action === 'upload') return out(upload(d));
     return out({ ok: false, error: 'unknown action' });
@@ -967,61 +981,121 @@ function doPost(e) {
 }
 
 function out(o) { return ContentService.createTextOutput(JSON.stringify(o)).setMimeType(ContentService.MimeType.JSON); }
+function num(v) { const n = Number(String(v).replace(/,/g, '')); return isFinite(n) ? n : 0; }
+function str(v) { return String(v == null ? '' : v).trim(); }
+function ymd(v) { return v instanceof Date ? Utilities.formatDate(v, 'Asia/Bangkok', 'yyyy-MM-dd') : str(v); }
+function toDate(s) { const m = /^(\\d{4})-(\\d{2})-(\\d{2})$/.exec(String(s)); return m ? new Date(+m[1], +m[2] - 1, +m[3]) : s; }
 
 function txSheet(ss) {
-  let sh = ss.getSheetByName(TX);
-  if (sh && sh.getLastRow() > 0 && sh.getRange(1, sh.getLastColumn()).getValue() !== 'data') {
-    sh.setName(TX + ' (เก่า ' + Utilities.formatDate(new Date(), 'Asia/Bangkok', 'yyyy-MM-dd HHmm') + ')');
-    sh = null;
-  }
-  if (!sh) sh = ss.insertSheet(TX, 0);
-  if (sh.getLastRow() === 0) {
-    sh.appendRow(HEAD);
-    sh.setFrozenRows(1);
-    sh.getRange(1, 1, 1, HEAD.length).setFontWeight('bold').setBackground('#1f3a8a').setFontColor('#ffffff');
-    sh.hideColumns(1);
-    sh.hideColumns(HEAD.length);
+  const sh = ss.getSheetByName(TX);
+  if (!sh) throw new Error('ไม่พบแท็บ "' + TX + '"');
+  if (sh.getMaxColumns() < DATA_COL) sh.insertColumnsAfter(sh.getMaxColumns(), DATA_COL - sh.getMaxColumns());
+  if (sh.getRange(1, ID_COL).getValue() !== 'id') {
+    sh.getRange(1, ID_COL, 1, 2).setValues([['id', 'data']]);
+    sh.hideColumns(ID_COL, 2);
   }
   return sh;
 }
 
+// แถวสุดท้ายที่มีวันที่ในคอลัมน์ A (ไม่นับแถวว่างที่มีแต่สูตร)
+function lastDataRow(sh) {
+  const v = sh.getRange(1, 1, sh.getMaxRows(), 1).getValues();
+  for (let i = v.length - 1; i >= 1; i--) if (str(v[i][0]) !== '') return i + 1;
+  return 1;
+}
+
 function load(ss) {
-  const sh = txSheet(ss), n = sh.getLastRow() - 1, txs = [], settings = {};
-  if (n > 0) sh.getRange(2, HEAD.length, n, 1).getValues().forEach(r => { if (r[0]) try { txs.push(JSON.parse(r[0])); } catch (e) {} });
-  const st = ss.getSheetByName(SET);
-  if (st && st.getLastRow() > 0) st.getRange(1, 1, st.getLastRow(), 2).getValues().forEach(r => { if (r[0]) try { settings[r[0]] = JSON.parse(r[1]); } catch (e) {} });
-  return { ok: true, txs: txs, settings: settings, sheetUrl: ss.getUrl() + '#gid=' + sh.getSheetId() };
+  const sh = txSheet(ss), last = lastDataRow(sh), txs = [];
+  if (last >= 2) {
+    const vals = sh.getRange(2, 1, last - 1, DATA_COL).getValues();
+    vals.forEach((r, i) => {
+      if (str(r[0]) === '' && str(r[10]) === '') return;
+      let id = str(r[ID_COL - 1]);
+      if (!id) { id = 's' + Utilities.getUuid().replace(/-/g, '').slice(0, 12); sh.getRange(i + 2, ID_COL).setValue(id); }
+      let extra = {};
+      try { if (r[DATA_COL - 1]) extra = JSON.parse(r[DATA_COL - 1]); } catch (e) {}
+      txs.push(Object.assign(extra, {
+        id: id, date: ymd(r[0]), typeTH: str(r[1]), project: str(r[2]), cat: str(r[3]), desc: str(r[4]),
+        party: str(r[5]), docNo: str(r[6]), base: num(r[7]), vat: num(r[8]), wht: num(r[9]), net: num(r[10]),
+        methodTH: str(r[11]), bankName: str(r[12]), accNo: str(r[13]), receiptUrl: str(r[14]), by: str(r[15]), note: str(r[16])
+      }));
+    });
+  }
+  return { ok: true, txs: txs, lists: lists(ss), settings: appSettings(ss), sheetUrl: ss.getUrl() };
 }
 
 function upsert(ss, rows) {
-  const sh = txSheet(ss), last = sh.getLastRow();
-  const ids = last > 1 ? sh.getRange(2, 1, last - 1, 1).getValues().map(r => String(r[0])) : [];
-  const add = [];
+  const sh = txSheet(ss);
+  let last = lastDataRow(sh);
+  const ids = last >= 2 ? sh.getRange(2, ID_COL, last - 1, 1).getValues().map(r => str(r[0])) : [];
   rows.forEach(r => {
-    const row = [r.id].concat(r.cells, [JSON.stringify(r.data)]);
+    const cells = r.cells.slice(0, NCELL);
+    cells[0] = toDate(cells[0]);
+    let row;
     const i = ids.indexOf(String(r.id));
-    if (i >= 0) sh.getRange(i + 2, 1, 1, row.length).setValues([row]);
-    else add.push(row);
+    if (i >= 0) row = i + 2;
+    else {
+      row = last + 1; last = row; ids.push(String(r.id));
+      if (row > sh.getMaxRows()) sh.insertRowsAfter(sh.getMaxRows(), 200);
+    }
+    sh.getRange(row, 14).setNumberFormat('@');
+    sh.getRange(row, 1, 1, NCELL).setValues([cells]);
+    sh.getRange(row, ID_COL, 1, 2).setValues([[r.id, JSON.stringify(r.data || {})]]);
+    if (r.data && r.data.by) addList(ss, 'staff', r.data.by);
   });
-  if (add.length) sh.getRange(sh.getLastRow() + 1, 1, add.length, HEAD.length).setValues(add);
 }
 
 function remove(ss, id) {
-  const sh = txSheet(ss), last = sh.getLastRow();
+  const sh = txSheet(ss), last = lastDataRow(sh);
   if (last < 2) return;
-  const i = sh.getRange(2, 1, last - 1, 1).getValues().map(r => String(r[0])).indexOf(String(id));
+  const i = sh.getRange(2, ID_COL, last - 1, 1).getValues().map(r => str(r[0])).indexOf(String(id));
   if (i >= 0) sh.deleteRow(i + 2);
 }
 
+function lists(ss) {
+  const sh = ss.getSheetByName(CFG);
+  if (!sh) return null;
+  const last = sh.getLastRow();
+  const rows = last >= 4 ? sh.getRange(4, 1, last - 3, 21).getValues() : [];
+  const pick = c => rows.map(r => str(r[c])).filter(String);
+  return {
+    projects: rows.filter(r => str(r[0])).map(r => ({ name: str(r[0]), client: str(r[1]), contract: num(r[2]) })),
+    catsOut: pick(4),
+    catsIn: pick(6),
+    accounts: rows.filter(r => str(r[10]) && str(r[11])).map(r => ({ bank: str(r[10]), accNo: str(r[11]), nick: str(r[12]) })),
+    staff: pick(20)
+  };
+}
+
+function addList(ss, list, item) {
+  const sh = ss.getSheetByName(CFG), c = LIST_COL[list];
+  if (!sh || !c || !item) return;
+  const L = lists(ss), digits = s => String(s).replace(/\\D/g, '');
+  if (list === 'projects' && L.projects.some(p => p.name === item.name)) return;
+  if (list === 'accounts' && L.accounts.some(a => a.bank === item.bank && digits(a.accNo) === digits(item.accNo))) return;
+  if (typeof item === 'string' && L[list].indexOf(item) >= 0) return;
+  const v = sh.getRange(4, c, sh.getMaxRows() - 3, 1).getValues();
+  let r = v.findIndex(x => str(x[0]) === '');
+  if (r < 0) { r = v.length; sh.insertRowsAfter(sh.getMaxRows(), 20); }
+  const row = r + 4;
+  if (list === 'projects') sh.getRange(row, 1, 1, 3).setValues([[item.name, item.client || '', item.contract || '']]);
+  else if (list === 'accounts') { sh.getRange(row, 12).setNumberFormat('@'); sh.getRange(row, 11, 1, 3).setValues([[item.bank, item.accNo, item.nick || '']]); }
+  else sh.getRange(row, c).setValue(item);
+}
+
+function appSettings(ss) {
+  const st = ss.getSheetByName(APP), o = {};
+  if (st && st.getLastRow() > 0) st.getRange(1, 1, st.getLastRow(), 2).getValues().forEach(r => { if (r[0]) try { o[r[0]] = JSON.parse(r[1]); } catch (e) {} });
+  return o;
+}
+
 function setting(ss, name, value) {
-  let st = ss.getSheetByName(SET);
-  if (!st) { st = ss.insertSheet(SET); st.hideSheet(); }
+  let st = ss.getSheetByName(APP);
+  if (!st) { st = ss.insertSheet(APP); st.hideSheet(); }
   const last = st.getLastRow();
   const names = last ? st.getRange(1, 1, last, 1).getValues().map(r => String(r[0])) : [];
-  const i = names.indexOf(name);
-  const row = [[name, JSON.stringify(value)]];
-  if (i >= 0) st.getRange(i + 1, 1, 1, 2).setValues(row);
-  else st.getRange(last + 1, 1, 1, 2).setValues(row);
+  const i = names.indexOf(name), row = [[name, JSON.stringify(value)]];
+  if (i >= 0) st.getRange(i + 1, 1, 1, 2).setValues(row); else st.getRange(last + 1, 1, 1, 2).setValues(row);
 }
 
 function upload(d) {
@@ -1033,9 +1107,31 @@ function upload(d) {
 }`;
 
 const safeCell=v=>{v=String(v??'');return/^[=+\-@]/.test(v)?"'"+v:v};
+const plainCat=c=>String(c||'').replace(/^[^\p{L}\p{N}]+/u,'').trim();
 function sheetRow(t){
-  const {srv,...data}=t;
-  return{id:t.id,data,cells:[t.date,t.type==='in'?'รายรับ':'รายจ่าย',safeCell(projName(t.projectId)),safeCell(t.cat),safeCell(t.desc),safeCell(t.party),safeCell(t.docNo),t.base,t.vat,t.wht,t.type==='in'?t.net:-t.net,t.method==='cash'?'เงินสด':'โอน',t.bank?BANK[t.bank]?.name:'',t.accNo?"'"+fmtAcc(t.accNo):'',safeCell(t.accName),safeCell(t.note),t.receiptUrl||'',safeCell(t.editedBy?`${t.by||''} (แก้: ${t.editedBy})`:t.by||''),new Date(t.updatedAt).toLocaleString('th-TH')]};
+  const {srv,...data}=t,cash=t.method==='cash';
+  return{id:t.id,data,cells:[t.date,t.type==='in'?'รายรับ':'รายจ่าย',safeCell(projName(t.projectId)),safeCell(plainCat(t.cat)),safeCell(t.desc),safeCell(t.party),safeCell(t.docNo),
+    t.base||'',t.vat||'',t.wht||'',t.net,cash?'เงินสด':'โอน',cash?'':(BANK[t.bank]?.name||''),cash?'':fmtAcc(t.accNo),t.receiptUrl||'',safeCell(t.by),safeCell(t.note)]};
+}
+/* แปลงแถวจากชีตกลับเป็นรายการของแอป (ค่าที่เห็นในชีตเป็นหลัก คนทำบัญชีแก้ในชีตได้) */
+function fromSheet(t){
+  const cash=t.methodTH==='เงินสด'||!t.methodTH,b=BANKS.find(x=>x.name===t.bankName);
+  const base=t.base||t.net;
+  return Object.assign({},t,{
+    type:t.typeTH==='รายรับ'?'in':'out',projectId:t.project||'ทั่วไป / สำนักงาน',
+    method:cash?'cash':'transfer',bank:cash?null:(b?b.code:'OTHER'),accNo:cash?'':digits(t.accNo),
+    base,amount:t.amount!=null?t.amount:(base+t.vat),vatMode:t.vatMode||(t.vat?'excl':'none'),
+    whtRate:t.whtRate!=null?t.whtRate:(t.wht&&base?Math.round(t.wht/base*100):0),
+    createdAt:t.createdAt||0,updatedAt:t.updatedAt||0,srv:true});
+}
+function applyLists(L){
+  if(!L)return;
+  const ps=(L.projects||[]).map(p=>({id:p.name,name:p.name,client:p.client||'',contract:p.contract||0,active:true}));
+  DB.projects=ps.length?ps:[{id:'ทั่วไป / สำนักงาน',name:'ทั่วไป / สำนักงาน',client:'',contract:0,active:true}];
+  if((L.catsOut||[]).length)DB.cats.out=L.catsOut;
+  if((L.catsIn||[]).length)DB.cats.in=L.catsIn;
+  DB.favs=(L.accounts||[]).map(a=>{const b=BANKS.find(x=>x.name===a.bank);return{id:'a_'+(b?b.code:'OTHER')+digits(a.accNo),bank:b?b.code:'OTHER',accNo:digits(a.accNo),accName:'',nick:a.nick||''}});
+  DB.staff=L.staff||[];
 }
 async function api(body){
   const r=await fetch(DEV.gsUrl,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(Object.assign({key:DEV.key},body)),redirect:'follow'});
@@ -1056,7 +1152,10 @@ function queueSetting(name){
   const value=name.startsWith('logo:')?(DB.logos[name.slice(5)]||''):DB[name];
   queue({op:'setting',name,value});
 }
-function setShared(name){save();queueSetting(name)}
+function setShared(name){save();if(['projects','cats','favs'].includes(name))return;queueSetting(name)}
+const isLinked=()=>!!DEV.gsUrl;
+function addToSheetList(list,item){queue({op:'addList',list,item})}
+function sheetOnly(){if(!isLinked())return false;toast('แก้ไขหรือลบได้ที่แท็บ “ตั้งค่า” ใน Google Sheet');return true}
 
 async function flushInner(){
   while(DEV.pending.length){
@@ -1066,6 +1165,7 @@ async function flushInner(){
       for(let i=0;i<a.length;i+=150){await api({action:'upsert',rows:a.slice(i,i+150).map(sheetRow)});a.slice(i,i+150).forEach(t=>t.srv=true);save()}}
     else if(p.op==='delete')await api({action:'delete',id:p.id});
     else if(p.op==='setting')await api({action:'setting',name:p.name,value:p.value});
+    else if(p.op==='addList')await api({action:'addList',list:p.list,item:p.item});
     else if(p.op==='upload'){const t=DB.txs.find(x=>x.id===p.id);const img=await idbGet(p.id);
       if(t&&img){const j=await api({action:'upload',name:`ใบเสร็จ_${t.date}_${t.id}.jpg`,mime:'image/jpeg',data:img.split(',')[1]});
         t.receiptUrl=j.url;t.receiptId=j.id;save();await api({action:'upsert',rows:[sheetRow(t)]})}}
@@ -1077,20 +1177,23 @@ async function pullInner(){
   const pend=DEV.pending;
   const pendTx=new Set(pend.filter(p=>p.op==='upsert'||p.op==='delete').map(p=>p.id));
   const inBulk=id=>pend.some(p=>p.op==='bulk'&&p.ids.includes(id));
+  j.txs=j.txs.map(fromSheet);
   const serverIds=new Set(j.txs.map(t=>t.id));
-  const merged=j.txs.filter(t=>!pendTx.has(t.id)).map(t=>Object.assign(t,{srv:true}));
+  const merged=j.txs.filter(t=>!pendTx.has(t.id));
   const has=id=>merged.some(m=>m.id===id);
   DB.txs.forEach(t=>{if(!has(t.id)&&(pend.some(p=>p.op==='upsert'&&p.id===t.id)||inBulk(t.id)))merged.push(t)});
   // รายการในเครื่องที่ยังไม่เคยขึ้น Sheet (เช่น บันทึกไว้ก่อนเชื่อมต่อ)
   const localOnly=DB.txs.filter(t=>!t.srv&&!serverIds.has(t.id)&&!pendTx.has(t.id)&&!inBulk(t.id));
   if(localOnly.length&&confirm(`พบ ${localOnly.length} รายการในเครื่องนี้ที่ยังไม่มีใน Google Sheet\nกด “ตกลง” เพื่อส่งขึ้น Sheet ให้ทุกเครื่องเห็น\nกด “ยกเลิก” เพื่อทิ้งรายการเหล่านี้`)){
+    localOnly.forEach(t=>{t.projectId=projName(t.projectId);t.cat=plainCat(t.cat)});
     merged.push(...localOnly);DB.txs=merged;queue({op:'bulk',ids:localOnly.map(t=>t.id)});
   }else DB.txs=merged;
   const s=j.settings||{};const pendSet=new Set(pend.filter(p=>p.op==='setting').map(p=>p.name));
   SHARED_KEYS.forEach(k=>{if(pendSet.has(k))return;if(s[k]!==undefined&&s[k]!==null)DB[k]=s[k];else queueSetting(k)});
   const logos={};Object.keys(s).filter(k=>k.startsWith('logo:')&&s[k]).forEach(k=>logos[k.slice(5)]=s[k]);
   Object.keys(DB.logos).forEach(c=>{if(pendSet.has('logo:'+c))logos[c]=DB.logos[c]});DB.logos=logos;
-  if(!DB.sheetLink&&j.sheetUrl)DB.sheetLink=j.sheetUrl;
+  applyLists(j.lists);
+  if(j.sheetUrl)DB.sheetLink=j.sheetUrl;
   save();refreshViews();
 }
 let running=null,rerun=false,rerunPull=false,lastErr='';
@@ -1133,6 +1236,12 @@ async function saveConn(){
 }
 function syncAll(){if(!DEV.gsUrl)return toast('กรุณาเชื่อมต่อก่อน');if(!DB.txs.length)return toast('ยังไม่มีรายการ');queue({op:'bulk',ids:DB.txs.map(t=>t.id)});toast(`กำลังส่ง ${DB.txs.length} รายการขึ้น Sheet…`)}
 function copyScript(){navigator.clipboard.writeText(GS_CODE).then(()=>toast('คัดลอกโค้ดแล้ว'),()=>toast('คัดลอกไม่ได้ — กรุณาเลือกข้อความเอง'))}
+function copyConnectLink(){
+  if(!DEV.gsUrl)return toast('กรุณาเชื่อมต่อ Google Sheet ก่อน');
+  const code=encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify({u:DEV.gsUrl,k:DEV.key})))));
+  const link=location.origin+location.pathname+'#connect='+code;
+  navigator.clipboard.writeText(link).then(()=>toast('คัดลอกลิงก์แล้ว ส่งให้พนักงานได้เลย'),()=>prompt('คัดลอกลิงก์นี้',link));
+}
 function exportApp(){
   if(!DEV.gsUrl)return toast('กรุณาเชื่อมต่อ Google Sheet ก่อน');
   const mk=n=>new RegExp('/\\*PRESET_'+n+'\\*/(\'\'|"[^"]*")');
@@ -1146,6 +1255,7 @@ function refreshViews(){
   if($('p-dash').classList.contains('on'))renderDash();
   if($('p-list').classList.contains('on'))renderList();
   if($('p-set').classList.contains('on'))renderSettingsLists();
+  if(!$('loginScreen').hidden)renderRecentUsers();
 }
 
 /* ================= ผู้ลงบัญชี (เข้าสู่ระบบด้วยชื่อ) ================= */
@@ -1153,11 +1263,14 @@ const SS_USER='contractor_books_session_user';
 function ssGet(){try{return sessionStorage.getItem(SS_USER)||''}catch(e){return''}}
 function ssSet(v){try{v?sessionStorage.setItem(SS_USER,v):sessionStorage.removeItem(SS_USER)}catch(e){}}
 function showUser(){$('userPill').textContent='👤 '+(DEV.user||'-');$('byName').textContent=DEV.user||'-'}
-function showLogin(){
-  const known=DEV.knownUsers||[];
+function renderRecentUsers(){
+  const known=[...new Set([...(DEV.knownUsers||[]),...(DB.staff||[])])].slice(0,12);
   $('loginCo').textContent=DB.company;
   $('recentUsers').innerHTML=known.map(n=>`<button type="button" class="chip" data-n="${esc(n)}">👤 ${esc(n)}</button>`).join('');
   $('recentUsers').querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{$('loginName').value=b.dataset.n;$('recentUsers').querySelectorAll('.chip').forEach(c=>c.classList.toggle('on',c===b))});
+}
+function showLogin(){
+  renderRecentUsers();
   $('loginName').value=DEV.user||'';$('loginRemember').checked=false;
   $('loginScreen').hidden=false;setTimeout(()=>$('loginName').focus(),50);
 }
@@ -1168,6 +1281,7 @@ $('loginForm').onsubmit=e=>{
   DEV.user=n;DEV.rememberUser=$('loginRemember').checked;
   DEV.knownUsers=[n,...(DEV.knownUsers||[]).filter(x=>x!==n)].slice(0,8);
   saveDev();ssSet(n);showUser();$('loginScreen').hidden=true;
+  if(isLinked()&&!(DB.staff||[]).includes(n))addToSheetList('staff',n);
   toast(`สวัสดี ${n}`+(DEV.rememberUser?' · จำชื่อนี้ไว้แล้ว':''));
 };
 function switchUser(){
@@ -1193,6 +1307,7 @@ window.addEventListener('focus',autoPull);
 window.addEventListener('online',()=>sync(true));
 init();
 requireLogin();
+if(CONNECTED_BY_LINK){saveDev();setTimeout(()=>toast('🔗 เชื่อมต่อกับ Google Sheet ของบริษัทแล้ว'),400)}
 idbOpen().then(()=>{if(DEV.gsUrl){lastPull=Date.now();sync(true)}});
 </script>
 </body>
